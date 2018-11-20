@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="cmaki" id="db.create" context="" logicalFilePath="db.create">
+      <sqlFile path="sql/db.create.sql" relativeToChangelogFile="true" stripComments="false"/>
+    </changeSet>
+    <changeSet author="cmaki" id="db.data" context="" logicalFilePath="db.data">
+      <sqlFile path="sql/db.data.sql" relativeToChangelogFile="true" stripComments="false"/>
+    </changeSet>
+    <changeSet author="cmaki" id="track-receipt" context="" logicalFilePath="track-receipt">
+      <sqlFile path="sql/track-receipt.sql" relativeToChangelogFile="true" stripComments="false"/>
+    </changeSet>
+
+</databaseChangeLog>

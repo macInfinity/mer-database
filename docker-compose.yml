@@ -1,0 +1,47 @@
+version: '3.1'
+
+services:
+  mer-database:
+    container_name: mer-database
+    image: mysql:5.6
+    ports:
+    - "5306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: myexpensereports
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: mer
+
+  mer-setup-db:
+    container_name: mer-setup-db
+    image: kilna/liquibase-mysql
+    environment:
+    # - LIQUIBASE_DEBUG=true
+      - LIQUIBASE_CONTEXT=dev
+      - LIQUIBASE_DATABASE=mer
+      - LIQUIBASE_CHANGELOG=/liquibase/db.changelog-master.xml
+      - LIQUIBASE_USERNAME=myexpensereports
+      - LIQUIBASE_PASSWORD=password
+      - LIQUIBASE_HOST=mer-database
+    depends_on:
+    - mer-database
+    volumes:
+      # the mount point here `/liquibase`, needs to match the path to the LIQUIBASE_CHANGELOG file above
+      - ./src/main/liquibase/:/liquibase
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+        echo "waiting for MySQL to be available"
+        until nc -z $$LIQUIBASE_HOST $$LIQUIBASE_PORT; do
+          echo "mysql is not available - sleeping"
+          sleep 1
+        done
+        echo "mysql is up"
+        liquibase update
+
+networks:
+  default:
+    external:
+      name: mer
